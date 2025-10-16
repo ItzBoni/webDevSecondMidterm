@@ -1,0 +1,15 @@
+:root{
+  --bg:#f7f7f9;
+  --accent:#2b6cb0;
+  --muted:#666;
+}
+*{box-sizing:border-box}
+body{font-family:Segoe UI, Roboto, Arial, sans-serif;background:var(--bg);color:#111;margin:0;padding:0}
+header{background:white;border-bottom:1px solid #e6e6e9;padding:12px 20px}
+nav a{color:var(--accent);text-decoration:none;margin-right:8px}
+main{max-width:900px;margin:24px auto;padding:20px;background:white;border-radius:6px}
+form label{display:block;margin-top:12px;font-weight:600}
+input,textarea{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px}
+button{margin-top:12px;background:var(--accent);color:white;border:none;padding:8px 12px;border-radius:4px}
+footer{padding:12px 20px;text-align:center;color:var(--muted)}
+.submitted{background:#f0f8ff;padding:12px;border-radius:4px;margin-bottom:12px}

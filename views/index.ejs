@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+
+  <h1>Welcome to the Home Page</h1>
+
+  <% if (submitted) { %>
+    <section class="submitted">
+      <h2>Submitted data</h2>
+      <pre><%= JSON.stringify(submitted, null, 2) %></pre>
+    </section>
+  <% } %>
+
+  <section class="form">
+    <h2>Send something</h2>
+    <form action="/submit" method="post">
+      <label for="name">Name</label>
+      <input id="name" name="name" />
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message"></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+
+<%- include('partials/footer') %>
