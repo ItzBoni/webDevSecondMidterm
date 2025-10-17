@@ -29,36 +29,23 @@ app.get('/', async (req, res) => {
     return res.render('index', { title: 'Home', characters: null });
   }
 
-  // Map the API response into a small objects array for the view
-  characters = response.data.map((c) => ({
-    id: c.id || c.characterId || c.slug || 0,
-    name: c.fullName || c.name || c.firstName || 'Unknown',
-    role: c.title || c.role || c.house || '',
-    img: c.imageUrl || c.image || '/placeholder-avatar.svg',
-    description: c.family || c.description || ''
-  }));
+  characters = response.data;
 
   res.render('index', { title: 'Home', characters });
 });
 
 app.post('/searchCharacter', async (req, res) => {
   const data = req.body.searchBar.trim().toLowerCase();
-  // If no search term provided, redirect to home and stop further handling
+
   if (!data) {
     return res.redirect('/');
   }
-
-  //If there are no characters stored (API error, go back to the home page)
-  if (!characters || !Array.isArray(characters)) {
-    return res.render('index', { title: 'Home', characters: null });
-  }
-  console.log(data);
 
   let characterSearch = [];
 
   // Iterates through the characters array for names that contain a similar string to the query
   characters.forEach((value) => {
-    if(value.name.toLowerCase().includes(data)){
+    if(value.fullName.toLowerCase().includes(data)){
       characterSearch.push(value);
     }
   });
@@ -69,6 +56,23 @@ app.post('/searchCharacter', async (req, res) => {
   }
   
   return res.render('index', { title: 'Home', characters: characterSearch });
+});
+
+app.get('/getSingleCharacter', async (req, res) => {
+  const id = req.query.id;
+
+  if (!id) return res.status(400).send('Missing id');
+
+  let singleCharacter = null;
+
+  singleCharacter = characters.find((value) => String(value.id) === String(id));
+
+  if (!singleCharacter) {
+    return res.status(404).send('Character not found');
+  }
+  console.log(singleCharacter);
+
+  return res.render('partials/single_character', { character: singleCharacter });
 });
 
 app.listen(PORT, () => {

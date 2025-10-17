@@ -1,0 +1,24 @@
+<!-- Character detail modal (rendered server-side with `character`) -->
+<div class="modal fade" id="characterModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="characterModalLabel"><%= character.fullName || (character.firstName + ' ' + (character.lastName || '')) %></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <% console.log("Modal of", character.id); %>
+                <img id="modal-img" src="<%= character.imageUrl || '' %>" alt="<%= character.fullName || '' %>" class="img-fluid mb-3" />
+                <h4 id="modal-name"><%= character.fullName %></h4>
+                <p id="modal-title" class="text-muted"><%= character.title || '' %></p>
+                <p id="modal-desc"><strong>Family:</strong> <%= character.family || '' %></p>
+                <p id ="modal-desc"><strong>First Name:</strong> <%= character.firstName || 'Unknown' %></p>
+                <p id="modal-desc"><strong>Last Name:</strong> <%= character.lastName || 'Unknown' %></p>
+                <p class="small text-muted">ID: <%= character.id %></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

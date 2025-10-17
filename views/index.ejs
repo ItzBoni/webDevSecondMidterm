@@ -27,13 +27,10 @@
             <section class="card-grid">
                 <% characters.forEach(function(ch){ %>
                     <article class="card character-card">
-                        <img class="card-img" src="<%= ch.img %>" alt="<%= ch.name %>" />
+                        <img class="card-img character-img" src="<%= ch.imageUrl %>" alt="<%= ch.fullName %>" data-id="<%= ch.id %>" id="char-img"/>
                         <div class="card-body">
-                            <h3 class="card-title"><%= ch.name %></h3>
-                            <p class="card-subtitle"><%= ch.role %></p>
-                            <% if (ch.description) { %>
-                                <p class="card-desc"><%= ch.description %></p>
-                            <% } %>
+                            <h3 class="card-title"><%= ch.fullName %></h3>
+                            <p class="card-subtitle"><%= ch.title %></p>
                         </div>
                     </article>
                 <% }) %>
@@ -55,5 +52,34 @@
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"
         ></script>
+        <script>
+            document.querySelectorAll('.character-img').forEach(img => {
+                img.addEventListener('click', async () => {
+                    const id = img.dataset.id;
+                    if (!id) return;
+
+                    try {
+                        const res = await fetch(`/getSingleCharacter?id=${encodeURIComponent(id)}`);
+                        if (!res.ok) throw new Error('Failed to fetch character');
+                        const html = await res.text();
+
+                        // Remove any existing modal element and insert the returned modal HTML
+                        const existing = document.getElementById('characterModal');
+                        if (existing) existing.remove();
+
+                        const container = document.createElement('div');
+                        container.innerHTML = html;
+                        document.body.appendChild(container.firstElementChild);
+
+                        // Initialize Bootstrap modal and show it
+                        const modalEl = document.getElementById('characterModal');
+                        const bsModal = new bootstrap.Modal(modalEl);
+                        bsModal.show();
+                    } catch (err) {
+                        console.error(err);
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
