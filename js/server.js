@@ -42,44 +42,33 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/searchCharacter', async (req, res) => {
-  const data = req.body.searchBar;
+  const data = req.body.searchBar.trim().toLowerCase();
   // If no search term provided, redirect to home and stop further handling
   if (!data) {
     return res.redirect('/');
   }
 
-  // Ensure we have characters loaded from the GET handler
+  //If there are no characters stored (API error, go back to the home page)
   if (!characters || !Array.isArray(characters)) {
-    // Render home with no characters (safe fallback)
     return res.render('index', { title: 'Home', characters: null });
   }
+  console.log(data);
 
-  // normalize search term
-  const query = data.trim().toLowerCase();
+  let characterSearch = [];
 
-  console.log(query);
-
-  // try exact/partial match
-  const character = characters.find((value) => {
-    //const name = value.name.trim().toLowerCase();
-    console.log("Query: ", query);
-    console.log("value: ", value.name.toLowerCase());
-    console.log(value.name.toLowerCase().includes(query));
-    console.log("\n")
-    return value.name && value.name.toLowerCase().includes(query);
+  // Iterates through the characters array for names that contain a similar string to the query
+  characters.forEach((value) => {
+    if(value.name.toLowerCase().includes(data)){
+      characterSearch.push(value);
+    }
   });
 
-  console.log(character);
-
   // No match -> render home with empty results
-  if (!character) {
+  if (!characterSearch) {
     return res.render('index', { title: 'Home', characters: null });
   }
-
-
-
-  // render index with a single-result array (view expects an array)
-  return res.render('index', { title: 'Home', characters: [character] });
+  
+  return res.render('index', { title: 'Home', characters: characterSearch });
 });
 
 app.listen(PORT, () => {
