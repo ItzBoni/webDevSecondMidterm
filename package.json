@@ -4,8 +4,8 @@
   "description": "Simple Express + EJS scaffold for a midterm project",
   "main": "js/server.js",
   "scripts": {
-    "start": "node controllers/server.js",
-    "dev": "nodemon controllers/server.js"
+    "start": "node js/server.js",
+    "dev": "nodemon js/server.js"
   },
   "keywords": [],
   "author": "",
