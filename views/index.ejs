@@ -52,7 +52,12 @@
         <% } else { %>
             <p style="text-align: center; color: var(--gold); font-size: 1.2rem;">No characters to display.</p>
         <% } %>
+
+        <% if(characters.length < 53) { %>
+            <form action="/" method="get"><button>Go Back</button></form>
+        <% } %>
     </div>
+
 
         <%- include('partials/footer') %>
     <!-- Bootstrap JavaScript Libraries -->
