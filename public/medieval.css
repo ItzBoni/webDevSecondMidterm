@@ -1,0 +1,76 @@
+/* Medieval theme overrides */
+:root{
+  --parchment:#f3e7d6;
+  --ink:#2b1b0f;
+  --accent:#7b3f00;
+  --muted-ink:#5a4637;
+  --gold:#c99b4b;
+}
+
+/* Paper background */
+body{
+  background: linear-gradient(180deg, #efe6d6 0%, #f8f2e6 100%);
+  color:var(--ink);
+  font-family: 'Cinzel', 'IM Fell English SC', Georgia, 'Times New Roman', serif;
+}
+
+/* Header and navbar */
+header{background:rgba(255,250,240,0.9);border-bottom:4px solid var(--accent);box-shadow:0 6px 0 rgba(0,0,0,0.03)}
+.navbar-brand{font-weight:700;letter-spacing:1px;color:var(--accent)!important}
+.navbar{font-family: 'Cinzel', serif}
+
+/* Main container looks like a parchment sheet */
+main{
+  background: linear-gradient(180deg, rgba(255,255,245,0.9) 0%, rgba(250,244,235,0.95)100%);
+  border: 8px solid #efe1c9;
+  box-shadow: 0 10px 30px rgba(27,20,10,0.15);
+  padding:28px;
+  border-radius:6px;
+}
+
+h1{font-family:'Cinzel',serif;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:2px;border-bottom:2px dashed rgba(0,0,0,0.05);padding-bottom:8px}
+
+/* Search form tweaks */
+.form-control{border-radius:2px;border:2px solid #e7d7be;background:rgba(255,255,255,0.6);padding:8px}
+.btn-outline-success{color:var(--gold);border-color:var(--gold)}
+.btn-outline-success:hover{background:var(--gold);color:#2b1b0f}
+
+/* Card grid - make them look like heraldic panels */
+.card-grid{gap:22px}
+.character-card{border:3px solid rgba(0,0,0,0.06);background:linear-gradient(180deg,#fffaf0,#fff6ea);padding-bottom:6px}
+.card-img{height:180px;object-fit:cover;border-bottom:2px solid rgba(0,0,0,0.06)}
+.card-title{font-family:'IM Fell English SC',serif;font-weight:700;color:var(--accent)}
+.card-subtitle{color:var(--muted-ink)}
+
+/* Footer */
+footer{background:transparent;padding:18px 0;color:var(--muted-ink);font-size:0.9rem}
+
+/* Modal tweaks */
+.modal-content{border:6px solid #efe1c9;background:linear-gradient(180deg,#fffdf6,#fff8ec)}
+.modal-title{font-family:'Cinzel',serif;color:var(--accent)}
+
+/* Small decorative touches */
+/* subtle paper texture for cards only (not the modal) */
+.card{
+    background-image: linear-gradient(45deg, rgba(0,0,0,0.01) 25%, rgba(0,0,0,0.01) 50%, rgba(0,0,0,0.01) 75%, transparent 75%, transparent);
+    background-size: 14px 14px;
+}
+
+/* Make modal opaque and match site parchment */
+.modal-content{
+    /* match main parchment look */
+    background: linear-gradient(180deg, rgba(255,255,245,0.95) 0%, rgba(250,244,235,0.98) 100%);
+    background-color: var(--parchment); /* fallback */
+    /* remove any translucent pattern that made it appear transparent */
+    background-image: none !important;
+    /* keep the existing border style */
+    border: 6px solid #efe1c9;
+}
+
+a{color:var(--accent)}
+
+/* Responsive tweaks */
+@media (max-width:600px){
+  .card-img{height:140px}
+  main{padding:16px}
+}
