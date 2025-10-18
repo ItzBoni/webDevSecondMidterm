@@ -23,3 +23,32 @@ footer{padding:12px 20px;text-align:center;color:var(--muted)}
 .card-subtitle{margin:0;color:var(--muted);font-size:0.9rem}
 .card-desc{margin-top:8px;font-size:0.9rem;color:#333}
 
+/* Responsive adjustments */
+/* Generated using Gemini 2.5 Pro Agent Mode*/
+@media (max-width: 768px) {
+  main {
+    margin: 16px;
+    padding: 16px;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+}
+
