@@ -38,6 +38,9 @@
         <% } else { %>
             <p>No characters to display.</p>
         <% } %>
+        <form action="/" method="get">
+            <button class="btn btn-outline-success">Back to all</button>
+        </form> 
 
         <%- include('partials/footer') %>
     <!-- Bootstrap JavaScript Libraries -->
@@ -53,32 +56,69 @@
             crossorigin="anonymous"
         ></script>
         <script>
+            let bsModal, existingModal;
+
+            let renderCharacterModal = async function(id){
+            if (id === null || id === undefined) return;
+
+            try {
+                const res = await fetch(`/getSingleCharacter?id=${encodeURIComponent(id)}`);
+                if (!res.ok) throw new Error('Failed to fetch character');
+                const html = await res.text();
+
+                // Remove any existing modal element and insert the returned modal HTML
+                existingModal = document.getElementById('characterModal');
+                if (existingModal) existingModal.remove();
+
+                const container = document.createElement('div');
+                container.innerHTML = html;
+                document.body.appendChild(container.firstElementChild);
+
+                // Initialize Bootstrap modal and show it
+                const modalEl = document.getElementById('characterModal');
+                bsModal = new bootstrap.Modal(modalEl);
+                bsModal.show();
+
+                let modal_prev = document.getElementById('modal-prev');
+                let modal_next = document.getElementById('modal-next');
+
+                if(modal_prev) {
+                    modal_prev.addEventListener('click', async () => {
+                        const currentId = Number(modal_prev.dataset.id); 
+                        const prevId = (currentId === 0) ? 52 : currentId - 1;
+
+                        modalEl.addEventListener('hidden.bs.modal', () => {
+                            renderCharacterModal(prevId);
+                        }, { once: true });
+                        
+                        bsModal.hide();
+                    });
+                }
+
+                if(modal_next) {
+                    modal_next.addEventListener('click', async () => {
+                        const currentId = Number(modal_next.dataset.id);
+                        const nextId = (currentId === 52) ? 0 : currentId + 1;
+
+                        console.log(nextId);
+
+                        modalEl.addEventListener('hidden.bs.modal', () => {
+                            renderCharacterModal(nextId);
+                        }, { once: true });
+
+                        bsModal.hide();
+                    });
+                }   
+            } catch (err) {
+                console.error(err);
+            }
+            }
+
             document.querySelectorAll('.character-img').forEach(img => {
-                img.addEventListener('click', async () => {
-                    const id = img.dataset.id;
-                    if (!id) return;
-
-                    try {
-                        const res = await fetch(`/getSingleCharacter?id=${encodeURIComponent(id)}`);
-                        if (!res.ok) throw new Error('Failed to fetch character');
-                        const html = await res.text();
-
-                        // Remove any existing modal element and insert the returned modal HTML
-                        const existing = document.getElementById('characterModal');
-                        if (existing) existing.remove();
-
-                        const container = document.createElement('div');
-                        container.innerHTML = html;
-                        document.body.appendChild(container.firstElementChild);
-
-                        // Initialize Bootstrap modal and show it
-                        const modalEl = document.getElementById('characterModal');
-                        const bsModal = new bootstrap.Modal(modalEl);
-                        bsModal.show();
-                    } catch (err) {
-                        console.error(err);
-                    }
-                });
+            img.addEventListener('click', async () => {
+                const id = img.dataset.id;
+                await renderCharacterModal(id);
+            });
             });
         </script>
     </body>

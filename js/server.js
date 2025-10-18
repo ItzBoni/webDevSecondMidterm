@@ -50,7 +50,6 @@ app.post('/searchCharacter', async (req, res) => {
     }
   });
 
-  // No match -> render home with empty results
   if (!characterSearch) {
     return res.render('index', { title: 'Home', characters: null });
   }
@@ -70,7 +69,6 @@ app.get('/getSingleCharacter', async (req, res) => {
   if (!singleCharacter) {
     return res.status(404).send('Character not found');
   }
-  console.log(singleCharacter);
 
   return res.render('partials/single_character', { character: singleCharacter });
 });
