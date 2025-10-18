@@ -1,85 +1,102 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <title>GoT simulator</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
+<head>
+    <title>GoT Characters</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        crossorigin="anonymous"
+    />
+    
 
-        <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
-    </head>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    
 
-    <body>
-        <%- include('partials/header') %>
+    <link rel="stylesheet" href="/pokemon-cards.css" />
+</head>
 
+<body>
+    <%- include('partials/header') %>
+
+    <div class="container-main">
         <h1>Game of Thrones Characters</h1>
 
         <% if (characters && characters.length) { %>
-            <section class="card-grid">
-                <% characters.forEach(function(ch){ %>
-                    <article class="card character-card">
-                        <img class="card-img character-img" src="<%= ch.imageUrl %>" alt="<%= ch.fullName %>" data-id="<%= ch.id %>" id="char-img"/>
-                        <div class="card-body">
-                            <h3 class="card-title"><%= ch.fullName %></h3>
-                            <p class="card-subtitle"><%= ch.title %></p>
-                        </div>
-                    </article>
-                <% }) %>
-            </section>
+            <div class="carousel-wrapper">
+
+                <button class="carousel-arrow left" aria-label="Scroll left">‹</button>
+
+                <div class="card-strip">
+                    <% characters.forEach(function(ch){ %>
+                        <article class="character-card" data-id="<%= ch.id %>">
+                            <img 
+                                class="character-img" 
+                                src="<%= ch.imageUrl %>" 
+                                alt="<%= ch.fullName %>"
+                            />
+                            <div class="card-body">
+                                <h3 class="card-title"><%= ch.fullName %></h3>
+                                <p class="card-subtitle"><%= ch.title %></p>
+                            </div>
+                        </article>
+                    <% }) %>
+                </div>
+                
+                <button class="carousel-arrow right" aria-label="Scroll right">›</button>
+            </div>
         <% } else { %>
-            <p>No characters to display.</p>
+            <p style="text-align: center; color: var(--gold); font-size: 1.2rem;">No characters to display.</p>
         <% } %>
+    </div>
 
-        <%- include('partials/footer') %>
-    <!-- Bootstrap JavaScript Libraries -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
+    <%- include('partials/footer') %>
 
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
-        <script>
-            document.querySelectorAll('.character-img').forEach(img => {
-                img.addEventListener('click', async () => {
-                    const id = img.dataset.id;
-                    if (!id) return;
+    <!-- Bootstrap JavaScript -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"
+    ></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"
+    ></script>
 
-                    try {
-                        const res = await fetch(`/getSingleCharacter?id=${encodeURIComponent(id)}`);
-                        if (!res.ok) throw new Error('Failed to fetch character');
-                        const html = await res.text();
+    <script src="/carousel.js"></script>
 
-                        // Remove any existing modal element and insert the returned modal HTML
-                        const existing = document.getElementById('characterModal');
-                        if (existing) existing.remove();
+    <script>
+        document.querySelectorAll('.character-card').forEach(card => {
+            card.addEventListener('click', async function() {
+                const id = this.dataset.id;
+                if (!id) return;
 
-                        const container = document.createElement('div');
-                        container.innerHTML = html;
-                        document.body.appendChild(container.firstElementChild);
+                try {
+                    const res = await fetch(`/getSingleCharacter?id=${encodeURIComponent(id)}`);
+                    if (!res.ok) throw new Error('Failed to fetch character');
+                    const html = await res.text();
 
-                        // Initialize Bootstrap modal and show it
-                        const modalEl = document.getElementById('characterModal');
-                        const bsModal = new bootstrap.Modal(modalEl);
-                        bsModal.show();
-                    } catch (err) {
-                        console.error(err);
-                    }
-                });
+                    const existing = document.getElementById('characterModal');
+                    if (existing) existing.remove();
+
+                    const container = document.createElement('div');
+                    container.innerHTML = html;
+                    document.body.appendChild(container.firstElementChild);
+
+                    const modalEl = document.getElementById('characterModal');
+                    const bsModal = new bootstrap.Modal(modalEl);
+                    bsModal.show();
+                } catch (err) {
+                    console.error('Error loading character:', err);
+                    alert('Could not load character details');
+                }
             });
-        </script>
-    </body>
+        });
+    </script>
+</body>
 </html>
