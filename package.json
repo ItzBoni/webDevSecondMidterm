@@ -18,5 +18,13 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ItzBoni/webDevSecondMidterm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ItzBoni/webDevSecondMidterm/issues"
+  },
+  "homepage": "https://github.com/ItzBoni/webDevSecondMidterm#readme"
 }
